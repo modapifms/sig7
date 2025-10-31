@@ -59,7 +59,18 @@
 <select id="filterType" onchange="filterVestiges()">
     <option value="Tous">Tous les Types</option>
     </select>
+<button id="resetFiltersButton" class="leaflet-control-command">
+    Réafficher tous les vestiges et phases
+</button>
 
+<style>
+    /* Exemple de style de base pour le bouton */
+    #resetFiltersButton {
+        padding: 5px 10px;
+        margin-top: 5px; /* Pour l'espacer un peu */
+        cursor: pointer;
+    }
+</style>
     <div id="vestiges-count" style="margin-top: 10px; font-size: 11px;"></div>
 	<button id="downloadShpBtn" style="
     margin-top:10px;
@@ -2259,6 +2270,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// --- 4. GESTION DU BOUTON DE RÉINITIALISATION ---
+
+/**
+ * Réinitialise les variables globales de filtre, remet les listes déroulantes à la valeur par défaut
+ * et appelle filterVestiges pour réafficher toutes les données.
+ */
+function resetFiltersAndShowAll() {
+    // 1. ARRETER LE RAFRAÎCHISSEMENT
+    stopPolling(); 
+
+    // 2. RÉINITIALISER LES VARIABLES GLOBALES DE FILTRE
+    // ATTENTION : Utilisez la valeur qui correspond à "Afficher tout" dans vos options de filtre.
+    // Si c'est une chaîne vide (''), laissez ''; si c'est 'Tous', utilisez 'Tous'.
+    window.currentFilterPhase = ''; 
+    window.currentFilterType = ''; 
+
+    // 3. RÉINITIALISER LES ÉLÉMENTS <select> dans l'interface utilisateur
+    const phaseFilter = document.getElementById('filterPhase');
+    if (phaseFilter) {
+        phaseFilter.value = ''; // Réinitialise l'option sélectionnée
+    }
+
+    const typeFilter = document.getElementById('filterType');
+    if (typeFilter) {
+        typeFilter.value = ''; // Réinitialise l'option sélectionnée
+    }
+    
+    // 4. APPLIQUER LE FILTRE AVEC LES VALEURS RÉINITIALISÉES
+    // Ceci force le recalcul et le réaffichage de TOUS les vestiges.
+    if (window.json_Vestiges_2) {
+        filterVestiges(window.json_Vestiges_2); 
+    }
+    
+    console.log("Filtres réinitialisés. Tous les vestiges réaffichés.");
+}
+
+// 5. ATTACHER L'ÉVÉNEMENT AU NOUVEAU BOUTON
+const resetButton = document.getElementById('resetFiltersButton');
+if (resetButton) {
+    resetButton.addEventListener('click', resetFiltersAndShowAll);
+}
 </script>
 
 

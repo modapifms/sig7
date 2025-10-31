@@ -59,6 +59,18 @@
 <select id="filterType" onchange="filterVestiges()">
     <option value="Tous">Tous les Types</option>
     </select>
+<button id="resetFiltersBtn" style="
+    margin-top:10px;
+    background:#555;
+    color:white;
+    border:none;
+    border-radius:4px;
+    padding:6px 10px;
+    cursor:pointer;
+    width:100%;
+">
+    🔄 Réafficher tous les vestiges
+</button>
 
     <div id="vestiges-count" style="margin-top: 10px; font-size: 11px;"></div>
 	<button id="downloadShpBtn" style="
@@ -947,6 +959,37 @@ function filterVestiges() {
 
     console.log(`✅ ${filteredFeatures.length} entités filtrées affichées.`);
 }
+		// =================================================================
+// 3. BOUTON DE RÉINITIALISATION DES FILTRES
+// =================================================================
+document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+    const phaseSelect = document.getElementById('filterPhase');
+    const typeSelect  = document.getElementById('filterType');
+
+    // Réinitialiser les menus à "Tous"
+    phaseSelect.value = "Tous";
+    typeSelect.value  = "Tous";
+
+    // Supprimer les couches filtrées (si présentes)
+    if (window.layer_Vestiges_2_Filtered) {
+        map.removeLayer(window.layer_Vestiges_2_Filtered);
+    }
+
+    // Réafficher la couche complète
+    if (!map.hasLayer(layer_Vestiges_2)) {
+        map.addLayer(layer_Vestiges_2);
+    }
+
+    // Mettre à jour le compteur
+    const total = json_Vestiges_2.features.length;
+    const countDiv = document.getElementById('vestiges-count');
+    if (countDiv) {
+        countDiv.textContent = `${total} vestige(s) affiché(s)`;
+    }
+
+    console.log("🔄 Réinitialisation des filtres effectuée – tous les vestiges sont visibles.");
+});
+
 // =================================================================
 // 3. APPEL MANQUANT (Assure le remplissage du menu au chargement)
 // =================================================================

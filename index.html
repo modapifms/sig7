@@ -59,18 +59,7 @@
 <select id="filterType" onchange="filterVestiges()">
     <option value="Tous">Tous les Types</option>
     </select>
-<button id="resetFiltersButton" class="leaflet-control-command">
-    Réafficher tous les vestiges et phases
-</button>
 
-<style>
-    /* Exemple de style de base pour le bouton */
-    #resetFiltersButton {
-        padding: 5px 10px;
-        margin-top: 5px; /* Pour l'espacer un peu */
-        cursor: pointer;
-    }
-</style>
     <div id="vestiges-count" style="margin-top: 10px; font-size: 11px;"></div>
 	<button id="downloadShpBtn" style="
     margin-top:10px;
@@ -96,6 +85,18 @@
 ">
     &#x1F3FA; Afficher Céramiques par Fait
 </button>
+	<button id="resetFiltersButton" class="leaflet-control-command">
+    Réafficher tous les vestiges et phases
+</button>
+
+<style>
+    /* Exemple de style de base pour le bouton */
+    #resetFiltersButton {
+        padding: 5px 10px;
+        margin-top: 5px; /* Pour l'espacer un peu */
+        cursor: pointer;
+    }
+</style>
 </div>
 <div id="ceramic-results-container" style="
     position: absolute; 

@@ -820,15 +820,13 @@ function getNormalizedComparisonValue(rawValue) {
 }
 // =================================================================
 
-// 1. FONCTION DE REMPLISSAGE DES FILTRES (corrigée)
 // =================================================================
+// 1. FONCTION DE REMPLISSAGE DES FILTRES (Rend les menus déroulants utilisables)
+// =================================================================
+
 function populateFilters() {
     const phaseFilter = document.getElementById('filterPhase');
     const typeFilter  = document.getElementById('filterType');
-
-    // Sauvegarde des valeurs actuellement sélectionnées (pour les restaurer ensuite)
-    const savedPhase = phaseFilter.value || "Tous";
-    const savedType  = typeFilter.value  || "Tous";
 
     if (!json_Vestiges_2 || !json_Vestiges_2.features) {
         console.error("Erreur : données 'json_Vestiges_2' introuvables.");
@@ -839,8 +837,10 @@ function populateFilters() {
     const uniqueTypes  = new Map();
 
     json_Vestiges_2.features.forEach(f => {
+        // Applique la normalisation pour obtenir une clé de comparaison cohérente
         const phaseKey = normalize(f.properties.Phase); 
         const phaseValue = capitalize(phaseKey); 
+
         const typeKey = normalize(f.properties.Type);
         const typeValue = capitalize(typeKey);
 
@@ -852,15 +852,15 @@ function populateFilters() {
         }
     });
 
-    // Nettoyage
+    // --- Nettoyage avant réinjection ---
     phaseFilter.innerHTML = '<option value="Tous">Toutes les Phases</option>';
     typeFilter.innerHTML  = '<option value="Tous">Tous les Types</option>';
 
-    // Ajout des options triées
+    // --- Ajout trié et encodé correctement ---
     Array.from(uniquePhases.values()).sort((a, b) => a.localeCompare(b, 'fr')).forEach(phase => {
         const opt = document.createElement('option');
         opt.value = phase;
-        opt.textContent = phase;
+        opt.textContent = phase; 
         phaseFilter.appendChild(opt);
     });
 
@@ -870,6 +870,8 @@ function populateFilters() {
         opt.textContent = type;
         typeFilter.appendChild(opt);
     });
+}
+
 // 2. FONCTION DE FILTRAGE CORRIGÉE ET SIMPLIFIÉE
 // (Utilise le GeoJSON global et les variables d'état globales)
 // =================================================================
@@ -2193,7 +2195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
-	<script>
+<script>
 // =========================================================================
 // SCRIPT DE CONTRÔLE CENTRALISÉ (À placer à la fin du <body>)
 // =========================================================================
@@ -2258,6 +2260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+
 
 </body>
 </html>
